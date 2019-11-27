@@ -1,0 +1,6 @@
+<div id="title"> {{issue.node.title}}</div>
+<div id="information">
+          <span id="author">
+            #{{issue.node.number}} opened on {{issue.node?.createdAt | date: 'short'}}
+            by {{issue.node.author?.login}}</span>
+  <span id="comment">Comments: {{issue.node.comments?.totalCount}}</span></div>

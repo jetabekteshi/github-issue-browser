@@ -1,0 +1,24 @@
+<app-search (searchValueEmitter)="onSearchValueChanges($event)"></app-search>
+
+<div id="state-filters-holder">
+  <mat-button-toggle-group name="fontStyle" aria-label="Font Style" [value]="issueState"
+                           (valueChange)="onIssueStateChange($event)">
+    <mat-button-toggle value="OPEN">Open</mat-button-toggle>
+    <mat-button-toggle value="CLOSED">Closed</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+<div id="list-holder">
+  <div id="header-holder">
+    <span> Issues ({{numberOfTotalIssues}})</span>
+  </div>
+  <div *ngFor="let element of dataSource">
+    <a [routerLink]="element.node.number" class="issue-holder">
+      <app-single-issue [issue]="element"></app-single-issue>
+    </a>
+  </div>
+</div>
+<div id="button-holder">
+  <button (click)="onPreviousPage()">Previous</button>
+  <button (click)="onNextPage()" [disabled]="!pageInfo?.hasNextPage">Next</button>
+</div>

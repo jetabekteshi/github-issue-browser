@@ -1,5 +1,16 @@
 export interface IssuesResponse {
-  data: { repository: { issues: { edges: IssueModel[]; totalCount: number; pageInfo: PageInfo } } };
+  edges: IssueModel[];
+  totalCount?: number;
+  issueCount?: number;
+  pageInfo: PageInfo;
+}
+
+export interface SearchQuery {
+  search: IssuesResponse;
+}
+
+export interface Query {
+  repository: { issues: IssuesResponse };
 }
 
 export interface IssueModel {
@@ -8,7 +19,7 @@ export interface IssueModel {
     url: string;
     author: { login: string, __typename: string };
     comments: { totalCount: number, __typename: string };
-    updatedAt: string;
+    createdAt: string;
     number: number;
   };
 }
