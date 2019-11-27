@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SearchIssueService} from '../search-issue.service';
-import {IssueModel, PageInfo, StateType} from '../models';
+import {IssueModel, PageInfo, StateType} from '../issue.models';
 
 @Component({
   selector: 'app-issues-list',
@@ -12,11 +12,12 @@ export class IssuesListComponent implements OnInit {
   numberOfTotalIssues: number;
   pageInfo: PageInfo;
 
-  issueState: StateType;
+  issueState: StateType = 'OPEN';
 
   startCursor: string;
   initialStartCursor: string; // the start cursor of the first page
   endCursor: string;
+
   searchTerm: string;
   loadingIndicator: boolean;
 
@@ -24,7 +25,6 @@ export class IssuesListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.issueState = 'OPEN';
     this.getIssues(true);
   }
 
@@ -60,6 +60,9 @@ export class IssuesListComponent implements OnInit {
   }
 
   onIssueStateChange($event: StateType) {
+    if (!$event || this.issueState === $event) {
+      return;
+    }
     this.issueState = $event;
     this.startCursor = null;
     this.endCursor = null;

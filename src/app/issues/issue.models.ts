@@ -40,7 +40,7 @@ export interface PageInfo {
 export type StateType = 'OPEN' | 'CLOSED';
 
 export interface IssueDetails {
-  author: { login: string, __typename: string };
+  author: { login: string };
   bodyHTML: string;
   number: number;
   title: string;

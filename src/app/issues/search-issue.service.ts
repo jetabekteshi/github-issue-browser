@@ -3,9 +3,10 @@ import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Observable} from 'rxjs';
 import {
-  IssueDetails, IssuesResponse, QueryDetailsResponse,
-  QueryListResponse, SearchQuery, StateType
-} from './models';
+  IssueDetails, IssuesResponse,
+  QueryDetailsResponse, QueryListResponse,
+  SearchQuery, StateType
+} from './issue.models';
 import {map} from 'rxjs/operators';
 
 @Injectable({
@@ -22,15 +23,11 @@ export class SearchIssueService {
 
   getIssues(state: StateType = 'OPEN', startCursor: string,
             endCursor: string, searchTerm: string): Observable<IssuesResponse> {
-    const queryResults = searchTerm ? this.searchIssues(state, startCursor, endCursor, searchTerm)
-      : this.queryIssues(state, startCursor, endCursor);
-    return queryResults.pipe(map(result => {
-      result.edges = result.edges.filter(item => item.node.number);
-      return result;
-    }));
+    return searchTerm ? this.searchIssues(state, startCursor, endCursor, searchTerm)
+      : this.getIssueList(state, startCursor, endCursor);
   }
 
-  queryIssues(state: StateType, startCursor: string, endCursor: string): Observable<IssuesResponse> {
+  getIssueList(state: StateType, startCursor: string, endCursor: string): Observable<IssuesResponse> {
     this.setQueryArguments(startCursor, endCursor);
     return this.apollo
       .query({
@@ -68,7 +65,7 @@ repository(owner:"angular", name:"angular") {
 
   searchIssues(state: StateType, startCursor: string, endCursor: string, searchTerm: string): Observable<IssuesResponse> {
     this.setQueryArguments(startCursor, endCursor);
-    const queryState = (state === 'OPEN') ? 'is:open' : 'is:closed';
+    const queryState = `is:${state.toLowerCase()}`;
     return this.apollo
       .query({
         query: gql`
@@ -109,8 +106,7 @@ repository(owner:"angular", name:"angular") {
     if (startCursor) {
       this.paginationArguments = `before: "${startCursor}"`;
       this.elementsToReturn = 'last';
-    }
-    if (endCursor) {
+    } else if (endCursor) {
       this.paginationArguments = `after: "${endCursor}"`;
     }
   }

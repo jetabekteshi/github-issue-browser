@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {SearchIssueService} from '../search-issue.service';
-import {IssueDetails} from '../models';
+import {IssueDetails} from '../issue.models';
 
 @Component({
   selector: 'app-issue-details',
