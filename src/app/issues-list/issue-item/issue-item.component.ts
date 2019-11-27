@@ -14,5 +14,4 @@ export class IssueItemComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

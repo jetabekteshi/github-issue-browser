@@ -1,14 +1,15 @@
 <div id="issue-item-holder">
 <span id="icon">
-  <i class="material-icons" *ngIf="issue?.node?.closed else openedItem" id="closed-issue-icon">check_circle_outline</i>
+  <i class="material-icons" *ngIf="issue.node.closed else openedItem" id="closed-issue-icon">check_circle_outline</i>
   <ng-template #openedItem> <i class="material-icons" id="opened-issue-icon">error_outline</i></ng-template>
 </span>
   <div id="issue-body">
     <div id="title"> {{issue.node.title}}</div>
     <div id="information">
-          <span id="author">
-            #{{issue.node.number}} opened on {{issue.node?.createdAt | date: 'short'}}
+          <span>
+            #{{issue.node.number}} {{issue.node.closed ? ('closed on ' + (issue.node.closedAt | date: 'short')) :
+            ('opened on ' + (issue.node.createdAt | date: 'short'))}}
             by {{issue.node.author?.login}}</span>
-      <span id="comment">Comments: {{issue.node.comments?.totalCount}}</span></div>
+      <span id="comment">Comments: {{issue.node.comments.totalCount}}</span></div>
   </div>
 </div>

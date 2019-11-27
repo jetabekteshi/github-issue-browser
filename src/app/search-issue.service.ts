@@ -27,7 +27,7 @@ export class SearchIssueService {
     }));
   }
 
-  queryIssues(state: StateType = 'OPEN', startCursor: string, endCursor: string): Observable<IssuesResponse> {
+  queryIssues(state: StateType, startCursor: string, endCursor: string): Observable<IssuesResponse> {
     this.setQueryArguments(startCursor, endCursor);
     return this.apollo
       .query({
@@ -41,6 +41,7 @@ repository(owner:"angular", name:"angular") {
               url
               number
               closed
+              closedAt
               createdAt
               author {
                 login
@@ -77,6 +78,7 @@ repository(owner:"angular", name:"angular") {
               url
               number
               closed
+              closedAt
               createdAt
               author {
                 login
@@ -120,6 +122,7 @@ repository(owner:"angular", name:"angular") {
           bodyHTML
           title
           number
+          closed
           createdAt
           author{
             login

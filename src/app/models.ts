@@ -21,6 +21,7 @@ export interface IssueModel {
     author: { login: string, __typename: string };
     comments: { totalCount: number, __typename: string };
     createdAt: string;
+    closedAt: string;
     number: number;
   };
 }

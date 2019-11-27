@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
   subscribeToSearchChanges() {
     this.subscription = this.searchControl.valueChanges.pipe(distinctUntilChanged(),
       debounceTime(500)).subscribe((searchValue) => {
-      this.searchValueEmitter.emit(searchValue);
+      this.searchValueEmitter.emit(searchValue.trim());
     });
   }
 
