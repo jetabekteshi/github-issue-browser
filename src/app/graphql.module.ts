@@ -10,7 +10,7 @@ const uri = 'https://api.github.com/graphql';
 
 export function provideApollo(httpLink: HttpLink) {
 
-  const token = 'fb07e76f9e98369ea6ee4466cc4a4fe2489cefca';
+  const token = '';
   const auth = setContext(() => ({
     headers: {
       Authorization: `Bearer ${token}`
