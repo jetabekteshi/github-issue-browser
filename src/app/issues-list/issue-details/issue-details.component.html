@@ -1,0 +1,11 @@
+<h2>Issue #{{issueNumber}}</h2>
+<div class="comment-holder">
+  <p class="header">{{issueDetails?.data?.repository?.issue?.author?.login}} commented: </p>
+  <p class="body" [innerHTML]="issueDetails?.data?.repository?.issue?.bodyHTML"></p>
+</div>
+<ng-container *ngFor="let comment of issueDetails?.data?.repository?.issue?.comments?.edges">
+  <div class="comment-holder">
+    <p class="header">{{comment?.node?.author?.login}} commented: </p>
+    <p class="body" [innerHTML]="comment?.node?.bodyHTML"></p>
+  </div>
+</ng-container>
