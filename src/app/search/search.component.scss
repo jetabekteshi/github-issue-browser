@@ -1,0 +1,15 @@
+#search-view {
+  width: calc(100% - 60px);
+  margin: 20px 30px;
+
+  input {
+    outline: none;
+    width: 100%;
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    &:focus {
+      border-bottom: 1px solid #3e2cbf;
+    }
+  }
+}
