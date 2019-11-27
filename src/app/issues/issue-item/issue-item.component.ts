@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IssueModel} from '../../models';
+import {IssueModel} from '../models';
 
 @Component({
   selector: 'app-single-issue',

@@ -9,8 +9,12 @@ export interface SearchQuery {
   search: IssuesResponse;
 }
 
-export interface Query {
+export interface QueryListResponse {
   repository: { issues: IssuesResponse };
+}
+
+export interface QueryDetailsResponse {
+  repository: { issue: IssueDetails };
 }
 
 export interface IssueModel {
@@ -18,8 +22,9 @@ export interface IssueModel {
     title: string;
     url: string;
     closed: boolean;
-    author: { login: string, __typename: string };
-    comments: { totalCount: number, __typename: string };
+    author: { login: string };
+    bodyHTML: string;
+    comments: { totalCount: number };
     createdAt: string;
     closedAt: string;
     number: number;
@@ -33,3 +38,11 @@ export interface PageInfo {
 }
 
 export type StateType = 'OPEN' | 'CLOSED';
+
+export interface IssueDetails {
+  author: { login: string, __typename: string };
+  bodyHTML: string;
+  number: number;
+  title: string;
+  comments: { totalCount: number, edges: IssueModel[] };
+}

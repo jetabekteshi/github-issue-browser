@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {SearchIssueService} from '../../search-issue.service';
+import {SearchIssueService} from '../search-issue.service';
+import {IssueDetails} from '../models';
 
 @Component({
   selector: 'app-issue-details',
@@ -9,7 +10,7 @@ import {SearchIssueService} from '../../search-issue.service';
 })
 export class IssueDetailsComponent implements OnInit {
   issueNumber: string;
-  issueDetails: any;
+  issueDetails: IssueDetails;
 
   constructor(private activatedRoute: ActivatedRoute,
               private searchIssueService: SearchIssueService) {

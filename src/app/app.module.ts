@@ -5,11 +5,12 @@ import {AppComponent} from './app.component';
 import {SearchComponent} from './search/search.component';
 import {GraphQLModule} from './graphql.module';
 import {HttpClientModule} from '@angular/common/http';
-import {IssuesListComponent} from './issues-list/issues-list.component';
-import {IssueItemComponent} from './issues-list/issue-item/issue-item.component';
-import {IssueDetailsComponent} from './issues-list/issue-details/issue-details.component';
+import {IssuesListComponent} from './issues/issues-list/issues-list.component';
+import {IssueItemComponent} from './issues/issue-item/issue-item.component';
+import {IssueDetailsComponent} from './issues/issue-details/issue-details.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     GraphQLModule,
     HttpClientModule,
     ReactiveFormsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

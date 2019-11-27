@@ -2,7 +2,10 @@ import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Observable} from 'rxjs';
-import {IssuesResponse, Query, SearchQuery, StateType} from './models';
+import {
+  IssueDetails, IssuesResponse, QueryDetailsResponse,
+  QueryListResponse, SearchQuery, StateType
+} from './models';
 import {map} from 'rxjs/operators';
 
 @Injectable({
@@ -60,7 +63,7 @@ repository(owner:"angular", name:"angular") {
         }
       }
     } `,
-      }).pipe(map(result => (result.data as Query).repository.issues));
+      }).pipe(map(result => (result.data as QueryListResponse).repository.issues));
   }
 
   searchIssues(state: StateType, startCursor: string, endCursor: string, searchTerm: string): Observable<IssuesResponse> {
@@ -100,7 +103,7 @@ repository(owner:"angular", name:"angular") {
       }).pipe(map(result => (result.data as SearchQuery).search));
   }
 
-  setQueryArguments(startCursor: string, endCursor: string,) {
+  setQueryArguments(startCursor: string, endCursor: string) {
     this.paginationArguments = '';
     this.elementsToReturn = 'first';
     if (startCursor) {
@@ -112,7 +115,7 @@ repository(owner:"angular", name:"angular") {
     }
   }
 
-  getIssue(issueNumber: string): Observable<any> {
+  getIssue(issueNumber: string): Observable<IssueDetails> {
     return this.apollo
       .query({
         query: gql`
@@ -141,7 +144,7 @@ repository(owner:"angular", name:"angular") {
         }
       }
     }`
-      });
+      }).pipe(map(result => (result.data as QueryDetailsResponse).repository.issue));
   }
 }
 

@@ -7,18 +7,18 @@
     <mat-button-toggle value="CLOSED">Closed</mat-button-toggle>
   </mat-button-toggle-group>
 </div>
-
 <div id="list-holder">
+  <mat-progress-bar mode="indeterminate" *ngIf="loadingIndicator"></mat-progress-bar>
   <div id="header-holder">
     <span> Issues ({{numberOfTotalIssues}})</span>
   </div>
-  <div *ngFor="let element of dataSource">
+  <div *ngFor="let element of issues">
     <a [routerLink]="element.node.number" class="issue-holder">
       <app-single-issue [issue]="element"></app-single-issue>
     </a>
   </div>
 </div>
 <div id="button-holder">
-  <button (click)="onPreviousPage()">Previous</button>
+  <button (click)="onPreviousPage()" [disabled]="initialStartCursor === pageInfo?.startCursor">Previous</button>
   <button (click)="onNextPage()" [disabled]="!pageInfo?.hasNextPage">Next</button>
 </div>
