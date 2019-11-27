@@ -12,13 +12,14 @@ import {map} from 'rxjs/operators';
 export class SearchIssueService {
 
   elementsToReturn: ELEMENTS_TO_RETURN;
+  paginationArguments: string;
 
   constructor(private apollo: Apollo) {
   }
 
   getIssues(state: StateType = 'OPEN', startCursor: string,
             endCursor: string, searchTerm: string): Observable<IssuesResponse> {
-    const queryResults = searchTerm ? this.searchIssues(startCursor, endCursor, searchTerm)
+    const queryResults = searchTerm ? this.searchIssues(state, startCursor, endCursor, searchTerm)
       : this.queryIssues(state, startCursor, endCursor);
     return queryResults.pipe(map(result => {
       result.edges = result.edges.filter(item => item.node.number);
@@ -27,26 +28,19 @@ export class SearchIssueService {
   }
 
   queryIssues(state: StateType = 'OPEN', startCursor: string, endCursor: string): Observable<IssuesResponse> {
-    let paginationParam = '';
-    let elementsToReturn = 'first';
-    if (startCursor) {
-      paginationParam = `before: "${startCursor}"`;
-      elementsToReturn = 'last';
-    }
-    if (endCursor) {
-      paginationParam = `after: "${endCursor}"`;
-    }
+    this.setQueryArguments(startCursor, endCursor);
     return this.apollo
       .query({
         query: gql`
 {
 repository(owner:"angular", name:"angular") {
-    issues(${elementsToReturn}:20, states:${state} ${paginationParam}, orderBy: {field: CREATED_AT, direction: DESC}) {
+    issues(${this.elementsToReturn}:20, states:${state} ${this.paginationArguments}, orderBy: {field: CREATED_AT, direction: DESC}) {
        edges {
             node {
               title
               url
               number
+              closed
               createdAt
               author {
                 login
@@ -68,27 +62,21 @@ repository(owner:"angular", name:"angular") {
       }).pipe(map(result => (result.data as Query).repository.issues));
   }
 
-  searchIssues(startCursor: string, endCursor: string, searchTerm: string): Observable<IssuesResponse> {
-    let paginationParam = '';
-    let elementsToReturn = 'first';
-    if (startCursor) {
-      paginationParam = `before: "${startCursor}"`;
-      elementsToReturn = 'last';
-    }
-    if (endCursor) {
-      paginationParam = `after: "${endCursor}"`;
-    }
+  searchIssues(state: StateType, startCursor: string, endCursor: string, searchTerm: string): Observable<IssuesResponse> {
+    this.setQueryArguments(startCursor, endCursor);
+    const queryState = (state === 'OPEN') ? 'is:open' : 'is:closed';
     return this.apollo
       .query({
         query: gql`
 {
-    search(query: "repo:angular/angular ${searchTerm}",
-    type: ISSUE, ${elementsToReturn}:20, ${paginationParam}) {
+    search(query: "repo:angular/angular ${searchTerm} ${queryState} is:issue",
+    type: ISSUE, ${this.elementsToReturn}:20, ${this.paginationArguments}) {
        edges {
             node {   ... on Issue {
               title
               url
               number
+              closed
               createdAt
               author {
                 login
@@ -108,6 +96,18 @@ repository(owner:"angular", name:"angular") {
       }}
     `,
       }).pipe(map(result => (result.data as SearchQuery).search));
+  }
+
+  setQueryArguments(startCursor: string, endCursor: string,) {
+    this.paginationArguments = '';
+    this.elementsToReturn = 'first';
+    if (startCursor) {
+      this.paginationArguments = `before: "${startCursor}"`;
+      this.elementsToReturn = 'last';
+    }
+    if (endCursor) {
+      this.paginationArguments = `after: "${endCursor}"`;
+    }
   }
 
   getIssue(issueNumber: string): Observable<any> {

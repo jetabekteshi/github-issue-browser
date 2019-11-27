@@ -17,6 +17,7 @@ export interface IssueModel {
   node: {
     title: string;
     url: string;
+    closed: boolean;
     author: { login: string, __typename: string };
     comments: { totalCount: number, __typename: string };
     createdAt: string;
